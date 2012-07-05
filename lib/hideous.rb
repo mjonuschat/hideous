@@ -9,9 +9,11 @@ module Hideous
     cattr_accessor :hideous_prime
     cattr_accessor :hideous_prime_inverse
     cattr_accessor :hideous_rndxor
+    cattr_accessor :hideous_enabled
     self.hideous_prime = (options[:prime] || hideous_default_prime)
     self.hideous_prime_inverse = (options[:prime_inverse] || hideous_default_prime_inverse)
     self.hideous_rndxor = (options[:rndxor] || hideous_default_rndxor)
+    self.hideous_enabled = (options[:auto].nil? ? true : options[:auto])
   end
 
   def self.hide(id, hideous_prime, hideous_prime_inverse, hideous_rndxor)
@@ -31,8 +33,13 @@ module Hideous
       super(*args)
     end
 
+    def find_by_obfuscated_id(*args)
+      args[0] = Hideous.show(args[0].to_s, self.hideous_prime, self.hideous_prime_inverse, self.hideous_rndxor)
+      find(*args)
+    end
+
     def has_obfuscated_id?
-      true
+      self.hideous_enabled
     end
 
     def hideous_default_prime
@@ -50,7 +57,11 @@ module Hideous
 
   module InstanceMethods
     def to_param
-      Hideous.hide(self.id, self.hideous_prime, self.hideous_prime_inverse, self.hideous_rndxor)
+      if self.hideous_enabled
+        Hideous.hide(self.id, self.hideous_prime, self.hideous_prime_inverse, self.hideous_rndxor)
+      else
+        super
+      end
     end
 
   end
