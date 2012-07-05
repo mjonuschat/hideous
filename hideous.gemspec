@@ -3,10 +3,10 @@ require File.expand_path('../lib/hideous/version', __FILE__)
 
 Gem::Specification.new do |gem|
   gem.authors       = ["Morton Jonuschat"]
-  gem.email         = ["m.jonuschat@gute-botschafter.de"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.email         = ["yabawock@gmail.com"]
+  gem.description   = %q{Hide/Obfuscate ActiveRecord IDs in a url using a modified Knuth hash}
+  gem.summary       = %q{A simple Rails plugin to obfuscate ActiveRecord IDs a bit}
+  gem.homepage      = "https://github.com/yabawock/hideous"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
