@@ -56,9 +56,13 @@ module Hideous
   end
 
   module InstanceMethods
+    def obfuscated_id
+      Hideous.hide(self.id, self.hideous_prime, self.hideous_prime_inverse, self.hideous_rndxor)
+    end
+
     def to_param
       if self.hideous_enabled
-        Hideous.hide(self.id, self.hideous_prime, self.hideous_prime_inverse, self.hideous_rndxor)
+        obfuscated_id
       else
         super
       end
