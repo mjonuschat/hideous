@@ -1,34 +1,35 @@
 class XorKnuthHash
   MAXID = 2147483647
   # Convience class method pointing to the instance method
-  def self.hash(record_id, prime, prime_inverse, rndxor)
-    new(record_id, prime, prime_inverse, rndxor).hash
+  def self.hash(record_id, prime, prime_inverse, rndxor, base)
+    new(record_id, prime, prime_inverse, rndxor, base).hash
   end
 
   # Convience class method pointing to the instance method
-  def self.reverse_hash(hash, prime, prime_inverse, rndxor)
-    new(hash, prime, prime_inverse, rndxor).reverse_hash
+  def self.reverse_hash(hash, prime, prime_inverse, rndxor, base)
+    new(hash, prime, prime_inverse, rndxor, base).reverse_hash
   end
 
   def self.calculate_prime_inverse(prime)
     self.modinv(prime, MAXID+1)
   end
 
-  def initialize(id_or_hash, prime, prime_inverse, rndxor)
+  def initialize(id_or_hash, prime, prime_inverse, rndxor, base)
     @id_or_hash = id_or_hash
     @prime = prime
     @prime_inverse = prime_inverse
     @rndxor = rndxor
+    @base = base
   end
 
   # obfuscates an integer
   def hash
-    (((@id_or_hash * @prime) & MAXID) ^ @rndxor).to_s(16)
+    (((@id_or_hash * @prime) & MAXID) ^ @rndxor).to_s(@base)
   end
 
   # de-obfuscates an integer
   def reverse_hash
-    ((@id_or_hash.to_i(16) ^ @rndxor) * @prime_inverse) & MAXID
+    ((@id_or_hash.to_i(@base) ^ @rndxor) * @prime_inverse) & MAXID
   end
 
   private
